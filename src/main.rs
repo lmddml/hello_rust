@@ -14,4 +14,7 @@ fn main() {
     library.add_user(user1);
     library.add_book(book1);
     library.list_checked_out_books();
+
+    let i = library.count_checked_out_books_by_user(&"john_doe".to_string());
+    println!("John Doe's book count: {i}")
 }

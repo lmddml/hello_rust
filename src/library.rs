@@ -25,12 +25,22 @@ impl Library {
     }
     pub fn list_checked_out_books(&mut self) {
         for book in &self.books {
-            if book.checked_out_by.is_some() {
-                let title = &book.title;
-                let isbn: &String = &book.isbn;
-                let username = book.checked_out_by.clone().unwrap();
-                println!("{title} ({isbn}) checked out by {username}")
+            if let Some(username) = &book.checked_out_by {
+                let Book { title, isbn, .. } = book;
+                println!("{} ({}) checked out by {}", title, isbn, username);
             }
         }
+    }
+
+    pub fn count_checked_out_books_by_user(&mut self, username: &String) -> i32 {
+        let mut i = 0;
+        for book in &self.books {
+            if let Some(checked_out_by) = &book.checked_out_by {
+                if username == checked_out_by {
+                    i += 1;
+                }
+            }
+        }
+        i
     }
 }
