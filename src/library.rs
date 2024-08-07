@@ -31,16 +31,36 @@ impl Library {
             }
         }
     }
+    pub fn list_all_users(&self) {
+        for user in &self.users {
+            println!("{}", user.username);
+        }
+    }
+    fn count_checked_out_books_by_user(&mut self, username: &String) -> usize {
+        self.books
+            .iter()
+            .filter(|book| book.checked_out_by == Some(username.to_string()))
+            .count()
+    }
+    fn find_and_check_out_book(&mut self, username: &str, title: &str) {
+        let book_to_check_out = self.books.iter_mut().find(|book| book.title == title);
 
-    pub fn count_checked_out_books_by_user(&mut self, username: &String) -> i32 {
-        let mut i = 0;
-        for book in &self.books {
-            if let Some(checked_out_by) = &book.checked_out_by {
-                if username == checked_out_by {
-                    i += 1;
-                }
+        match book_to_check_out {
+            Some(book) => {
+                book.check_out(username.to_string());
+            }
+            None => {
+                println!("Book not found");
             }
         }
-        i
+    }
+    pub fn check_out_book(&mut self, username: &str, title: &str) {
+        let n = self.count_checked_out_books_by_user(&username.to_string());
+        if n == 2 {
+            println!("Too many books!");
+            return;
+        }
+
+        self.find_and_check_out_book(username, title);
     }
 }

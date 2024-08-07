@@ -6,15 +6,21 @@ use library::{book::Book, user::User, Library};
 fn main() {
     let mut library = Library::new();
     let user1 = User::new(String::from("john_doe"));
-    let mut book1 = Book::new(
+    let book1 = Book::new(
         String::from("The Rust Programming Language"),
         String::from("123"),
     );
-    book1.check_out(user1.username.clone());
+    let book2 = Book::new(String::from("Software Engineering"), String::from("456"));
+    let book3 = Book::new(String::from("Computer Science"), String::from("789"));
     library.add_user(user1);
     library.add_book(book1);
-    library.list_checked_out_books();
+    library.add_book(book2);
+    library.add_book(book3);
 
-    let i = library.count_checked_out_books_by_user(&"john_doe".to_string());
-    println!("John Doe's book count: {i}")
+    library.check_out_book("john_doe", "The Rust Programming Language");
+    library.check_out_book("john_doe", "Software Engineering");
+    library.check_out_book("john_doe", "Computer Science");
+
+    library.list_all_users();
+    library.list_checked_out_books();
 }
